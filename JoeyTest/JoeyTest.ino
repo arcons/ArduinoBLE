@@ -28,7 +28,15 @@
 #include <SoftwareSerial.h>
 
 SoftwareSerial mySerial(10, 11); // RX, TX
-
+int counter=0;
+byte messageStart[5] = {0x00, 0x80, 0x00, 0x80, 0x00};
+byte packetNum = 0x06;
+byte heartRate = 0x07;
+byte arrythmia = 0x08;
+byte dontCare = 0x09;
+byte amplitudeLSB = 0x0A;
+byte amplitudeMSB = 0x0B;
+byte dspOutput[12];
 void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
@@ -46,7 +54,51 @@ void setup() {
 
 void loop() { // run over and over
   if (mySerial.available()) {
+//    if(counter<12)
+//    {
+//      byte input = mySerial.read();
+//      if(counter<5 && messageStart[counter] == input)
+//      {
+//        Serial.println("Start packets");
+//      }
+//      else if(counter==6)
+//      {
+//        packetNum = input;
+//      }
+//      else if(counter==7)
+//      {
+//        heartRate = input;
+//      }
+//      else if(counter==8)
+//      {
+//        arrythmia = input;
+//      }
+//      else if(counter==10)
+//      {
+//        amplitudeLSB = input;
+//      }
+//      else if(counter==11)
+//      {
+//        amplitudeLSB = input;
+//      }
+//      counter++;
+//    }
+//    else
+//    {
+//      Serial.print("Packet Number: ");
+//      Serial.println((int)packetNum);
+//      Serial.print("Heart Rate: ");
+//      Serial.println((int)heartRate);
+//      Serial.print("Arryhthmia: ");
+//      Serial.println((int)arrythmia);
+//      Serial.print("Amplitude: ");
+//      Serial.println((int)amplitudeMSB);
+//      
+//      counter=0;
+//    }
     Serial.write(mySerial.read());
+    //Serial.print("Joey's output is ");
+    //Serial.println(output);
   }
   if (Serial.available()) {
     mySerial.write(Serial.read());
