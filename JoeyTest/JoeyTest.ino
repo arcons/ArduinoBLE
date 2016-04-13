@@ -29,11 +29,10 @@
 
 SoftwareSerial mySerial(10, 11); // RX, TX
 int counter=0;
-byte messageStart[5] = {0x00, 0x80, 0x00, 0x80, 0x00};
-byte packetNum = 0x06;
-byte heartRate = 0x07;
+byte messageStart[4] = {'a', 'b', 'c', 'd'};
+byte input[4];
 byte arrythmia = 0x08;
-byte dontCare = 0x09;
+byte heartRate = 0x07;
 byte amplitudeLSB = 0x0A;
 byte amplitudeMSB = 0x0B;
 byte dspOutput[12];
@@ -52,8 +51,41 @@ void setup() {
   mySerial.println("Hello, world?");
 }
 
-void loop() { // run over and over
-  if (mySerial.available()) {
+void loop()
+{ // run over and over
+  if (mySerial.available())
+  {
+    bool packetEnd = false;
+      input[0] = mySerial.read();
+      if(input[0]=='a')
+      {
+        Serial.println("a");
+        input[1] = mySerial.read();
+        if(input[1]==0x62)
+        {
+          Serial.println("b");
+          input[2] = mySerial.read();
+          if(input[2]==0x63)
+          {
+            Serial.println("c");
+            input[3] = mySerial.read();
+            if(input[3]==0x64)
+            {
+            Serial.println("HOLY FUCK IT STARTED RIGHT BUT THIS CODE IS SHIT");
+            arrythmia = mySerial.read();
+            heartRate = mySerial.read();
+            amplitudeLSB = mySerial.read();
+            amplitudeMSB = mySerial.read();
+            }
+          }
+        }
+      }
+      else
+      {
+        packetEnd = true;
+        //Serial.println("Unsucessful start bits");
+      }
+    }
 //    if(counter<12)
 //    {
 //      byte input = mySerial.read();
@@ -96,12 +128,40 @@ void loop() { // run over and over
 //      
 //      counter=0;
 //    }
-    Serial.write(mySerial.read());
-    //Serial.print("Joey's output is ");
-    //Serial.println(output);
-  }
-  if (Serial.available()) {
-    mySerial.write(Serial.read());
-  }
+//    Serial.write(mySerial.read());
+//    Serial.print("Joey's output is ");
+//    Serial.println(output);
+//  if (Serial.available()) {
+//    mySerial.write(Serial.read());
+//  }
+delay(5);
 }
 
+void fourByteRead()
+{
+      input[0] = mySerial.read();
+      input[1] = mySerial.read();
+      input[2] = mySerial.read();
+      input[3] = mySerial.read();
+}
+
+bool packetStart(byte *input)
+{
+    int comp=0;
+    int i =0;
+    for(i=0; i<4; i++)
+    {
+      if(input[i] == messageStart[i])
+      {
+        comp++;
+      }
+    }
+    if(comp==4)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+}

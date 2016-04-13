@@ -4,8 +4,8 @@
 SoftwareSerial BTSerial(11, 10); //RX|TX
 
 void setup(){
-  Serial.begin(9600);
-  BTSerial.begin(9600); // default baud rate
+  Serial.begin(57600);
+  BTSerial.begin(57600); // default baud rate
   while(!Serial); //if it is an Arduino Micro
   Serial.println("AT commands: ");
 }
