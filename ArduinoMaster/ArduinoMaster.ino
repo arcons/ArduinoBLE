@@ -1,5 +1,8 @@
 #include <Wire.h>
 #include <Adafruit_MCP4725.h>
+#include <SoftwareSerial.h>
+
+SoftwareSerial KarsonSerial(11, 10); //RX|TX
 
 
 short heartTestData[255] =
@@ -19,7 +22,6 @@ uint16_t i=0;
 
 void setup(){
   //Use Serial for Karson
-  //This is temporarily set to view the output
   Serial.begin(9600);
   //DSP is Serial1
   //RX1 TX1
@@ -34,15 +36,8 @@ void setup(){
   //Begin Connection
   Serial2.print("AT+START");
   Serial3.print("AT+START");
-  delay(100);
   Serial2.print("go");
   Serial3.print("go");
-
-  //Right is DAC
-  dacLeft.begin(0x62);
-  //Right is DAC2 this has A0 jumped to VDD for the 0x63 address
-  dacRight.begin(0x63);
-
 }
 
 void loop()
@@ -52,26 +47,20 @@ void loop()
   byte leftInput[4];
   byte joeyInput[4];
   //Test the outpouts
-  //Read the outputs from bluetooh
   if(Serial2.available())
   {
-    //Remove later, read the bytes and output them to view via realterm
     Serial.write(Serial2.readBytes(rightInput, 4));
     //Store in the buffer
   }
   if(Serial3.available())
   {
-    //Remove later, read the bytes and output them to view via realterm
     Serial.write(Serial3.readBytes(leftInput, 4));
     //Store in the buffer
   }
 
   //Scale the voltage down from 16 bits to 12 bits
   uint16_t leftVoltage = leftInput[3]*256 + leftInput[4];
-  uint16_t rightVoltage = rightInput[3]*256 + rightInput[4];
-
-  leftVoltage = leftVoltage/4;
-  rightVoltage = rightVoltage/4;
+  uint16_t rightVoltage = rightInput[3]*256 + rightInput[4];;
 
   Serial.print("The right voltage is:");
   Serial.println(rightVoltage);
