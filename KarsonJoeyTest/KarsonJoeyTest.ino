@@ -62,13 +62,18 @@ void loop(){
 //   Serial.write(joeyInput,4);
 //   Serial.write(joeyInput,4);
 //   Serial.println("");
-   Serial3.write(joeyInput,4);
+   Serial.write(joeyInput,4);
 //   if(bytesRead>0)
 //   {
    //Serial.print(bytesRead, HEX);
 //   byte test[4] = {0x31, 0x32, 0x33, 0x34};
 //   Serial.write(test,4);
 //   Serial2.write(test,4);
+ }
+ else
+ { 
+//   Serial.write(joeyInput,4);
+//   Serial.println("");
  }
 }
 
