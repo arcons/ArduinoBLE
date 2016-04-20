@@ -1,5 +1,7 @@
 #include <SoftwareSerial.h>
 
+ byte joeyInput[4];
+ byte bytesRead;
 
 //int testData[255] = {
 //  46,80,76,59,42,27,-2,-35,-16,34,7,-44,32,131,34,-142,-134,-15,7,-34,-45,-66,-87,-51,-15,-26,-28,-17,-24,11,78,55,-7,54,137,51,-91,-86,6,43,36,17,-15,-17,18,24,11,41,62,13,-11,59,107,48,3,
@@ -33,23 +35,34 @@ byte output[4];
 uint16_t i=0;
 
 void setup(){
+    pinMode(13, OUTPUT);
   Serial.begin(9600);
   //Joeys output is serial 1
   Serial1.begin(57600);
   Serial2.begin(9600);
+  Serial3.begin(9600);
   //Set a 500ms timeout
   Serial1.setTimeout(10);
+    delay(100);
+  digitalWrite(13, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(100);              // wait for a second
+  digitalWrite(13, LOW);    // turn the LED off by making the voltage LOW
+  delay(100);     
+  digitalWrite(13, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(100);              // wait for a second
+  digitalWrite(13, LOW);    // turn the LED off by making the voltage LOW
+  delay(100);    
 }
 
 void loop(){
- byte joeyInput[4];
- byte bytesRead;
  if(Serial1.available())
  {
 //   Serial.write(Serial1.read());
    bytesRead = Serial1.readBytes(joeyInput, 4);
-   Serial.write(joeyInput,4);
-   Serial2.write(joeyInput,4);
+//   Serial.write(joeyInput,4);
+//   Serial.write(joeyInput,4);
+//   Serial.println("");
+   Serial3.write(joeyInput,4);
 //   if(bytesRead>0)
 //   {
    //Serial.print(bytesRead, HEX);

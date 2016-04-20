@@ -152,28 +152,28 @@ void loop(void) {
       for (i = 0; i < 256; i++)
       {
         dac.setVoltage(pgm_read_word(&(DACLookup_FullSine_8Bit[i])), false);
-        //dac2.setVoltage(pgm_read_word(&(DACLookup_FullSine_8Bit[i])), false);
-        if(i<128)
-        {
-          dac2.setVoltage(i*4, false);
-        }
-        else
-        {
-        int out = i-1;
-        dac2.setVoltage(out*4, false);
-        }
-        int temp = pgm_read_word(&(DACLookup_FullSine_8Bit[i]));
-        //Serial.
-        temp &= 0xFF;
-        short second = temp>>8 & 0xFF;
-        short first = temp;
-        byte output[4];
-        output[0]=0x01;
-        output[1]= 0x00;
-        output[2]= 0x00;
-        output[4] = 0x01;
-        KarsonSerial.write(output, 4);
-        Serial.println(temp);
+        dac2.setVoltage(pgm_read_word(&(DACLookup_FullSine_8Bit[i])), false);
+//        if(i<128)
+//        {
+//          dac2.setVoltage(i*4, false);
+//        }
+//        else
+//        {
+//        int out = i-1;
+//        dac2.setVoltage(out*4, false);
+//        }
+//        int temp = pgm_read_word(&(DACLookup_FullSine_8Bit[i]));
+//        //Serial.
+//        temp &= 0xFF;
+//        short second = temp>>8 & 0xFF;
+//        short first = temp;
+//        byte output[4];
+//        output[0]=0x01;
+//        output[1]= 0x00;
+//        output[2]= 0x00;
+//        output[4] = 0x01;
+//        KarsonSerial.write(output, 4);
+//        Serial.println(temp);
       }
     #endif
 }
